@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paint</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div id="sidebar">
+		<div class="colorButtons">
+			<h3>Colour</h3>
+			<input type="color" id="colorpicker" value="#c81464" class="colorpicker">
+		</div>
+		<div class="colorButtons">
+			<h3>Bg Color</h3>
+			<input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
+		</div>
+
+		<div class="toolsButtons">
+			<h3>Tools</h3>
+			<input type="button" id="eraser" class="btn-white" value="Eraser"></button>
+			<input type="button" id="clear" class="btn-red" value="Clear"></button>
+		</div>
+
+		<div class="buttonSize">
+			<h3>Size (<span id="showSize">5</span>)</h3>
+			<input type="range" min="1" max="50" value="5" step="1" id="controlSize">
+		</div>
+
+		<div class="canvasSize">
+			<h3>Canvas</h3>
+			<div class="input-group">
+				<span>X</span>
+				<input type="number" id="sizeX" placeholder="sizeX" value="800">
+			</div>
+			<div class="input-group">
+				<span>Y</span>
+				<input type="number" id="sizeY" placeholder="sizeY" value="800">
+			</div>
+			<input type="button" class="btn-blue" value="Update" id="canvasUpdate">
+		</div>
+		<div class="Storage">
+			<h3>Storage</h3>
+			<input type="button" class="btn-yellow" value="Save" id="save">
+			<input type="button" class="btn-yellow" value="Load" id="load">
+			<input type="button" class="btn-yellow" value="Clear" id="clearCache">
+		</div>
+		<div class="extra">
+			<h3>Extra</h3>
+			<a id="saveToImage">Download</a>
+		</div>
+		
+	</div>
+</body>
+<script src="script.js"></script>
+</html>
+
+
