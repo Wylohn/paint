@@ -1,3 +1,5 @@
+// VARIABLES
+
 var isMouseDown = false
 var canvas = document.createElement('canvas');
 var body = document.getElementsByTagName("body")[0];
@@ -7,9 +9,11 @@ var currentBg = "#ffffff"
 var currentColor = "rgb(200,10,100)";
 var currentSize = 5;
 
+// INIT CANVAS+
 
 createCanvas()
 
+// BUTTONS EVENT
 
 document.getElementById('canvasUpdate').addEventListener('click', function() {
     createCanvas();
@@ -41,6 +45,8 @@ document.getElementById('clearCache').addEventListener('click', function() {
     console.log("Cache cleared!");
 });
 
+//REDRAW
+
 function redraw() {
     for (var i = 1; i < linesArray.length; i++) {
         CTX.beginPath();
@@ -53,9 +59,13 @@ function redraw() {
     }
 }
 
+// DRAWING EVENT HANDLERS
+
 canvas.addEventListener('mousedown', function() {mousedown(canvas, event);});
 canvas.addEventListener('mousemove', function() {mousemove(canvas, event);});
 canvas.addEventListener('mouseup', mouseup);
+
+// CREATE CANVAS
 
 function createCanvas() {
     canvas.id = "canvas"
@@ -69,16 +79,22 @@ function createCanvas() {
     body.appendChild(canvas);
 }
 
+// DOWNLOAD CANVAS
+
 function downloadCanvas(link, canvas, filename) {
     link.href = document.getElementById(canvas).toDataURL();
     link.download = filename;
 }
+
+// SAVE CANVAS
 
 function save() {
     localStorage.removeItem("savedCanvas");
     localStorage.setItem("savedCanvas", JSON.stringify(linesArray));
     console.log("Saved canvas!");
 }
+
+// LOAD CANVAS
 
 function load() {
     if (localStorage.getItem("savedCanvas") != null) {
@@ -100,10 +116,14 @@ function load() {
     }
 }
 
+// ERASER
+
 function eraser() {
-    currentSize = 50;
+    size = currentSize;
     currentColor = CTX.fillStyle
 }
+
+// GET MOUSE POSITION
 
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
@@ -112,6 +132,8 @@ function getMousePos(canvas, evt) {
         y: evt.clientY - rect.top
     };
 }
+
+// MOUSE DOWN
 
 function mousedown(canvas, evt) {
     var mousePos = getMousePos(canvas, evt);
@@ -124,6 +146,8 @@ function mousedown(canvas, evt) {
     CTX.strokeStyle = currentColor;
 }
 
+// MOUSE MOVE
+
 function mousemove(canvas, evt) {
 
     if(isMouseDown){
@@ -134,6 +158,15 @@ function mousemove(canvas, evt) {
     }
 }
 
+// MOUSE UP
+
+function mouseup() {
+    isMouseDown = false;
+    store()
+}
+
+// DATA STORAGE
+
 function store(x, y, s, c) {
     var line = {
         "x": x,
@@ -142,9 +175,4 @@ function store(x, y, s, c) {
         "color": c
     }
     linesArray.push(line);
-}
-
-function mouseup() {
-    isMouseDown = false;
-    store()
 }
