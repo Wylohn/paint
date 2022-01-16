@@ -2,8 +2,9 @@ var isMouseDown = false
 var canvas = document.createElement('canvas');
 var body = document.getElementsByTagName("body")[0];
 var CTX = canvas.getContext('2d');
+var linesArrray = [];
 var currentBg = "#ffffff"
-var currentColor = "rgb(100,100,100)";
+var currentColor = "rgb(200,10,100)";
 var currentSize = 5;
 
 
@@ -27,6 +28,18 @@ document.getElementById('controlSize').addEventListener('change', function() {
     currentSize = this.value;
     document.getElementById("showSize").innerHTML = this.value;
 });
+document.getElementById('saveToImage').addEventListener('click', function() {
+    downloadCanvas(this, 'canvas', 'masterpiece.png');
+}, false);
+document.getElementById('eraser').addEventListener('click', eraser);
+document.getElementById('clear').addEventListener('click', createCanvas);
+document.getElementById('save').addEventListener('click', save);
+document.getElementById('load').addEventListener('click', load);
+document.getElementById('clearCache').addEventListener('click', function() {
+    localStorage.removeItem("savedCanvas");
+    linesArray = [];
+    console.log("Cache cleared!");
+});
 
 function redraw() {
     for (var i = 1; i < linesArray.length; i++) {
@@ -42,7 +55,7 @@ function redraw() {
 
 canvas.addEventListener('mousedown', function() {mousedown(canvas, event);});
 canvas.addEventListener('mousemove', function() {mousemove(canvas, event);});
-canvas.addEventListener('mouseup', mouseup());
+canvas.addEventListener('mouseup', mouseup);
 
 function createCanvas() {
     canvas.id = "canvas"
@@ -56,6 +69,42 @@ function createCanvas() {
     body.appendChild(canvas);
 }
 
+function downloadCanvas(link, canvas, filename) {
+    link.href = document.getElementById(canvas).toDataURL();
+    link.download = filename;
+}
+
+function save() {
+    localStorage.removeItem("savedCanvas");
+    localStorage.setItem("savedCanvas", JSON.stringify(linesArray));
+    console.log("Saved canvas!");
+}
+
+function load() {
+    if (localStorage.getItem("savedCanvas") != null) {
+        linesArray = JSON.parse(localStorage.savedCanvas);
+        var lines = JSON.parse(localStorage.getItem("savedCanvas"));
+        for (var i = 1; i < lines.length; i++) {
+            CTX.beginPath();
+            CTX.moveTo(linesArray[i-1].x, linesArray[i-1].y);
+            CTX.lineWidth  = linesArray[i].size;
+            CTX.lineCap = "round";
+            CTX.strokeStyle = linesArray[i].color;
+            CTX.lineTo(linesArray[i].x, linesArray[i].y);
+            CTX.stroke();
+        }
+        console.log("Canvas loaded.");
+    }
+    else {
+        console.log("No canvas in memory!");
+    }
+}
+
+function eraser() {
+    currentSize = 50;
+    currentColor = CTX.fillStyle
+}
+
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
     return {
@@ -65,7 +114,8 @@ function getMousePos(canvas, evt) {
 }
 
 function mousedown(canvas, evt) {
-    isMouseDown = true
+    var mousePos = getMousePos(canvas, evt);
+    isMouseDown = true;
     var currentPosition = getMousePos(canvas, evt);
     CTX.moveTo(currentPosition.x, currentPosition.y)
     CTX.beginPath();
@@ -95,6 +145,6 @@ function store(x, y, s, c) {
 }
 
 function mouseup() {
-    isMouseUp = false;
+    isMouseDown = false;
     store()
 }
