@@ -111,23 +111,62 @@ input {
     cursor: pointer;
 }
 
+/* Animation */
 
+.menu-btn.open .menu-btn__burger {
+    transform: translateX(-50px);
+    background: transparent;
+}
+
+.menu-btn.open .menu-btn__burger::before {
+    transform: rotate(45deg) translate(35px, -35px);
+}
+
+.menu-btn.open .menu-btn__burger::after {
+    transform: rotate(-45deg) translate(35px, 35px);
+}
 
 /* Responsive */
 @media (max-width: 980px) {
     
-    #menu {
-        content: "";
-        display: block;
+    .menu-btn {
+        display: flex;
         position: absolute;
-        background-image: url(../img/menu.svg);
-        background-size: contain;
-        background-repeat: no-repeat;
-        width: 50px;
-        height: 50px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        width: 60px;
+        height: 60px;
         top: 2%;
         left: 2%;
+        transition: all .5s ease-in-out;
         z-index: 3;
+    }
+
+    .menu-btn__burger::before, .menu-btn__burger::after {
+        content: "";
+        position: absolute;
+        width: 50px;
+        height: 5px;
+        background-color: #000000;
+        border-radius: 4px;
+        transition: all .5s ease-in-out;
+    }
+
+    .menu-btn__burger::before {
+        transform: translateY(-15px);
+    }
+
+    .menu-btn__burger {
+        width: 50px;
+        height: 5px;
+        background-color: #000000;
+        border-radius: 4px;
+        transition: all .5s ease-in-out;
+    }
+
+    .menu-btn__burger::after {
+        transform: translateY(15px);
     }
     
     .sidebar-style {
